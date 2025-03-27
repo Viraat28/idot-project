@@ -1,0 +1,16 @@
+// .homecontainer {
+//     width: 100%;
+// }
+
+.homecontainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  .home-image {
+    max-width: 100%;
+    height: auto;
+  }
+  

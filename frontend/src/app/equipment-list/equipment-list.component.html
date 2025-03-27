@@ -1,0 +1,94 @@
+<div class="container">
+    <div class="row">
+      <div class="filter-wrapper">
+        <div class="filter-container">
+          <div class="filter-label">Filters:</div>
+          <div class="filter-options">
+            <div class="search-box">
+              <input type="text" placeholder="Search Subcategories" [(ngModel)]="searchText" (ngModelChange)="onSearchChange()" />
+            </div>
+            <div class="category-dropdown">
+              <label for="category">Select Category:</label>
+              <select id="category" [(ngModel)]="selectedCategory" (ngModelChange)="onCategoryChange()">
+                <option value="">All Categories</option>
+                <option *ngFor="let category of getSubCategoryMapKeys()" [value]="category">{{ category }}</option>
+              </select>
+            </div>
+    
+            <div class="sub-cat-dropdown" *ngIf="selectedCategory" [class.open]="showDropdown">
+              <label for="subCategory">Select Subcategories:</label>
+              <select id="subCategory" [(ngModel)]="selectedSubCategory" (ngModelChange)="onSubCategoryChange()">
+                <option value="">All Subcategories</option>
+                <option *ngFor="let subCategory of subCategoriesMap[selectedCategory]" [value]="subCategory">{{ subCategory }}</option>
+              </select>
+            </div>
+            
+            <!-- Sizes Dropdown (Only show if a category is selected) -->
+            <div class="size-dropdown" *ngIf="selectedCategory && selectedSubCategory" [class.open]="showSizeDropdown">
+              <label for="size">Select Sizes:</label>
+              <select id="size" [(ngModel)]="selectedSize" (ngModelChange)="onSizeChange()">
+                <option value="">All Sizes</option>
+                <option *ngFor="let size of sizesMap[selectedSubCategory]" [value]="size">{{ size }}</option>
+              </select>
+            </div>
+          </div>
+<!--           
+
+          <div class="sort-by-container">
+            <label class="sortby-label" for="sort-by">Sort by:</label>
+            <select id="sort-by" [(ngModel)]="sortOrder" (ngModelChange)="onSortChange()">
+              <option value="asc">Size (ASC)</option>
+              <option value="desc">Size (DSC)</option>
+            </select>
+          </div> -->
+        </div>
+      </div>
+      <div class="equipment-wrapper">
+        <div class="equipment-list-container">
+            <div *ngIf="isListEmpty">List is empty. Please check your filter options.</div>
+            <div class="card-row" *ngIf="!isListEmpty">
+            <div *ngFor="let equipment of filteredEquipmentList.slice((currentPage-1)*itemsPerPage, currentPage*itemsPerPage)" (dblclick)="onEquipmentCardDoubleClick(equipment)">
+              <div class="equipment-card" (click)="onEquipmentCardDoubleClick(equipment)">
+                
+                <div class="equipment-card-title" (dblclick)="onEquipmentCardDoubleClick(equipment)">Sub Category: {{equipment.Sub_Category}}</div>
+                <div class="equipment-card-title" (dblclick)="onEquipmentCardDoubleClick(equipment)">Size: {{equipment.Size}}</div>
+                <div class="equipment-card-description" (dblclick)="onEquipmentCardDoubleClick(equipment)">
+                  Fuel type: {{ getFuelType(equipment['Reimbursable Fuel_type (1 diesel, 2 gas, 3 other)'] || 0) }}
+                </div>
+                <div class="equipment-card-description" (dblclick)="onEquipmentCardDoubleClick(equipment)">Model year: {{modelYear}}</div>
+                <div class="equipment-card-price" (dblclick)="onEquipmentCardDoubleClick(equipment)">Price($): {{equipment.Original_price}}</div>
+                <div class="edit-icon" *ngIf="isManageEquipment" (click)="onEditIconClick($event, equipment)">
+                  <img src="assets/Icons/pencil-icon.svg" alt="Edit Icon">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-overlay" *ngIf="showEditForm || showAddForm">
+          <div class="modal-content">
+            <app-edit-form [equipment]="selectedEquipForEdit" 
+            [showAddForm]="showAddForm"
+            (saveClicked)="onSaveEquipment($event)"
+            (cancelClicked)="onCancelEdit()"
+            [subCategoriesMap]="subCategoriesMap"
+            >
+          </app-edit-form>
+          </div>
+        </div>
+        <div *ngIf="spinnerOn">
+          <app-loading-spinner [message]="message"></app-loading-spinner>
+        </div>
+        <div class="pagination-container" *ngIf="!isListEmpty">
+          <button class="btn btn-outline-primary" [disabled]="currentPage === 1" (click)="prevPage()">Previous</button>
+          <span>{{currentPage}} / {{totalPages}}</span>
+          <button class="btn btn-outline-primary" [disabled]="currentPage === totalPages" (click)="nextPage()">Next</button>
+        </div>
+      </div>
+      <div *ngIf="isManageEquipment" class="add-equipment-button-container">
+        <button class="btn btn-success" (click)="showAddEquipmentForm()">Add New Equipment</button>
+      </div>
+    </div>
+  </div>
+
+
+  

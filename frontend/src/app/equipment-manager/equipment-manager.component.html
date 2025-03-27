@@ -1,0 +1,92 @@
+<div *ngIf="!dataLoaded">
+  <app-loading-spinner [message]="'Loading data...'"></app-loading-spinner>
+</div>
+
+<div *ngIf="dataLoaded && !showGenerateForm">
+  <h2>Model years</h2>
+  <ul class="year-list">
+      <li *ngFor="let year of equipmentYears">
+          <a href="javascript:void(0);" (click)="loadEquipmentData(year)">{{ year }}</a>
+      </li>
+      <li>
+          <a href="javascript:void(0);" (click)="loadEquipmentData('new')">Generate new data</a>
+      </li>
+      <li>
+          <a href="javascript:void(0);" (click)="loadEquipmentData('fuel')">Edit Fuel Costs</a>
+      </li>
+      <li>
+          <a href="javascript:void(0);" (click)="loadEquipmentData('wage')">Edit Hourly Wage</a>
+      </li>
+      <li>
+          <a href="javascript:void(0);" (click)="exportDataForm('equipments')">Export Equipment Data</a>
+      </li>
+  </ul>
+
+  <div *ngIf="contractors.length > 0">
+      <h2>Contractors</h2>
+      <ul class="year-list">
+          <li *ngFor="let contractor of contractors">
+              <a href="javascript:void(0);" (click)="loadContractorData(contractor)">{{ parseContractorName(contractor) }}</a>
+          </li>
+          <li>
+              <a href="javascript:void(0);" (click)="exportDataForm('contractors')">Export Contractor Data</a>
+          </li>
+      </ul>
+  </div>
+</div>
+
+<!-- Edit Fuel Costs Form -->
+<div *ngIf="fuelCostsForm && showFuelForm && !showGenerateForm" class="fuel-costs-edit-form">
+  <h2>Edit Fuel Costs</h2>
+  <form [formGroup]="fuelCostsForm">
+      <label for="gasoline_price">Gasoline Price:</label>
+      <input type="number" id="gasoline_price" formControlName="gasoline_price">
+
+      <label for="diesel_price">Diesel Price:</label>
+      <input type="number" id="diesel_price" formControlName="diesel_price">
+
+      <label for="other">Other:</label>
+      <input type="number" id="other" formControlName="other">
+
+      <button type="button" (click)="editFuelCosts()">Save Fuel Costs</button>
+      <button type="button" (click)="closeFuelForm()">Cancel</button>
+  </form>
+</div>
+
+<!-- Edit Labor Wage Form -->
+<div *ngIf="labourWageForm && showWageForm && !showGenerateForm" class="fuel-costs-edit-form">
+  <h2>Edit Labor Wage</h2>
+  <form [formGroup]="labourWageForm">
+      <label for="hourly_wage">Hourly labor wage:</label>
+      <input type="number" id="labourWage" formControlName="hourly_wage">
+      
+      <button type="button" (click)="editHourlyWage()">Save Wage Costs</button>
+      <button type="button" (click)="closeWageForm()">Cancel</button>
+  </form>
+</div>
+
+<!-- Background overlay -->
+<div class="backdrop" *ngIf="fuelCostsForm && !showGenerateForm"></div>
+
+<!-- Generate New Year Data Form -->
+<div *ngIf="showGenerateForm">
+  <app-edit-form [showGenerateForm]="showGenerateForm"
+          (saveClicked)="generateNextYearData($event)"
+          (cancelClicked)="onCancelEdit()">
+  </app-edit-form>
+</div>
+
+<!-- Export Data Form -->
+<div *ngIf="exportFormData.length > 0">
+  <div class="modal-overlay">
+      <div class="modal-content">
+          <app-edit-form [exportFormData]="exportFormData" 
+              (exportClicked)="exportData($event)" 
+              [exportDataType]="exportDataType"
+              (cancelClicked)="onCancelEdit()">
+          </app-edit-form>
+      </div>
+  </div>
+</div>
+
+<router-outlet></router-outlet>

@@ -1,0 +1,24 @@
+<div class="container">
+    <h2>Select Your County</h2>
+    
+    <div class="select-group">
+    <label for="county">Choose a County:</label>
+    <select id="county" [(ngModel)]="selectedCounty">
+      <option value="">-- Select County --</option>
+      <option *ngFor="let county of counties" [value]="county">{{ county }}</option>
+    </select>
+  </div>
+    <!-- <button (click)="onCountySelect()" [disabled]="!selectedCounty">Continue</button>
+  </div> -->
+  <div class="select-group">
+  <label for="quarter">Choose a Quarter:</label>
+  <select id="quarter" [(ngModel)]="selectedQuarter">
+    <option value="">-- Select Quarter --</option>
+    <option *ngFor="let quarter of quarters" [value]="quarter">{{ quarter }}</option>
+  </select>
+  </div>
+
+  <!-- Continue Button -->
+  <button (click)="onCountySelect()" [disabled]="!selectedCounty || !selectedQuarter">Continue</button>
+</div>
+  

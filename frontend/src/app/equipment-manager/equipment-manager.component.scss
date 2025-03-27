@@ -1,0 +1,114 @@
+.container {
+    max-width: 100%;
+  }
+  
+  h2 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .year-list {
+    list-style-type: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  
+  .year-list li {
+    margin-bottom: 10px;
+  }
+  
+  .year-list a {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+  }
+  
+  .year-list a:hover {
+    background-color: #0056b3;
+  }
+
+  .fuel-costs-edit-form {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    z-index: 1000; /* Place the form above other elements */
+  }
+  
+  .fuel-costs-edit-form h2 {
+    margin-bottom: 10px;
+  }
+  
+  .fuel-costs-edit-form label {
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  .fuel-costs-edit-form input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+  }
+  
+  .fuel-costs-edit-form button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .fuel-costs-edit-form button:hover {
+    background-color: #2980b9;
+  }
+  
+  .backdrop {
+    display: none;
+}
+  .backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
+    z-index: 999; /* Place the backdrop below the form but above other elements */
+  }
+
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000; /* Adjust this value as needed */
+}
+
+.modal-content {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  max-width: 80%; /* Adjust the width of the modal content */
+  overflow-y: auto; /* Enable scrolling if content overflows */
+}
+  
+  

@@ -1,0 +1,357 @@
+<!-- <div *ngIf="equipment">
+  <h2>Edit Equipment Details</h2>
+  <table>
+    <tr>
+      <td>Category:</td>
+      <td><input type="text" [(ngModel)]="equipment.Category" readonly></td>
+      <td>Sub Category:</td>
+      <td><input type="text" [(ngModel)]="equipment.Sub_Category" readonly></td>
+    </tr>
+    <tr>
+      <td>Size:</td>
+      <td><input type="text" [(ngModel)]="equipment.Size" readonly></td>
+      <td>Fuel Type:</td>
+      <td>
+        <select [(ngModel)]="selectedFuelType" (change)="onFuelTypeChange($event)">
+          <option value="1">Diesel</option>
+          <option value="2">Gas</option>
+        </select>
+      </td>
+    </tr>
+
+    <tr>
+      <td>Select Quarter:</td>
+      <td>
+        <select [(ngModel)]="selectedQuarter" (change)="onQuarterChange($event)" name="fuelUnitPrice">
+          <option *ngFor="let quarter of quarters" [value]="quarter">{{ quarter }}</option>
+        </select>
+        <p>Selected Fuel Price: {{ selectedFuelUnitPrice }}</p>
+      </td>
+
+      <td>Original Price:</td>
+      <td><input type="number" [(ngModel)]="equipment.Original_price"></td>
+    </tr>
+
+    <tr>
+      <td>Sales Tax:</td>
+      <td><input type="number" [(ngModel)]="equipment.Sales_Tax"></td>
+      <td>Discount:</td>
+      <td><input type="number" [(ngModel)]="equipment.Discount"></td>
+    </tr>
+    <tr>
+      <td>Salvage Value:</td>
+      <td><input type="number" [(ngModel)]="equipment.Salvage_Value"></td>
+      <td>Annual Overhaul Labor Hours:</td>
+      <td><input type="number" [(ngModel)]="equipment.Annual_Overhaul_Labor_Hours"></td>
+    </tr>
+    <tr>
+      <td>Annual Field Labor Hours:</td>
+      <td><input type="number" [(ngModel)]="equipment.Annual_Field_Labor_Hours"></td>
+      <td>Cost Of New Set Of Tires:</td>
+      <td><input type="number" [(ngModel)]="equipment.Cost_of_A_New_Set_of_Tires"></td>
+    </tr>
+    <tr>
+      <td>Tire Life Hours:</td>
+      <td><input type="number" [(ngModel)]="equipment.Tire_Life_Hours"></td>
+      <td>Hourly Lube Costs:</td>
+      <td><input type="number" [(ngModel)]="equipment.Hourly_Lube_Costs"></td>
+    </tr>
+    <tr>
+      <td>Hourly Wage:</td>
+      <td><input type="number" [(ngModel)]="equipment.Hourly_Wage"></td>
+      <td>Horsepower(fps):</td>
+      <td><input type="number" [(ngModel)]="selectedHorsePower" (change)="onHorsePowerChange($event)"></td>
+    </tr>
+    <tr>
+      <td>Economic Life in months:</td>
+      <td><input type="number" [(ngModel)]="equipment.Economic_Life_in_months"></td>
+      <td>Standard Monthly Use Hours:</td>
+      <td><input type="number" [(ngModel)]="equipment.Monthly_use_hours"></td>
+    </tr>
+    <tr>
+      <td>Initial Freight Costs:</td>
+      <td><input type="number" [(ngModel)]="equipment.Initial_Freight_cost"></td>
+      <td>Annual Overhead Rate Based On Resale Value:</td>
+      <td><input type="number" [(ngModel)]="equipment.Annual_Overhead_rate"></td>
+    </tr>
+    <tr>
+      <td>Annual Overhaul Parts Cost Rate Of Original Price:</td>
+      <td><input type="number" [(ngModel)]="equipment.Annual_Overhaul_Parts_cost_rate"></td>
+      <td>Annual Field Repair Parts :</td>
+      <td><input type="number" [(ngModel)]="totalAnnualRepairAndComponentRate"></td>
+    </tr>
+    <tr>
+       <td>Capital Cost Rate Of Original Price:</td>
+      <td><input type="number" [(ngModel)]="equipment.Cost_of_Capital_rate"></td>
+    </tr>
+  </table>
+
+  <div class="center">
+    <div class="button-container">
+      <button (click)="onCalculateCostsClicked('calculate')">Calculate Costs</button>
+    </div>
+    <div class="button-container">
+      <button (click)="onCalculateCostsClicked('view')">Calculate Internal Costs</button>
+    </div>
+  </div>
+
+  <h2>Calculated Costs</h2>
+  <div class="costs-container">
+    <table class="results">
+      <tr>
+        <td>Current Market Resale Value:</td>
+        <td>{{ equipment.Current_Market_Year_Resale_Value | number: '1.2-2' }}</td>
+      </tr>
+      </table>
+    <table class="results">
+      <tr>
+        <td>Depreciation Ownership Cost (Monthly):</td>
+        <td>{{ equipment.Depreciation_Ownership_cost_Monthly | number: '1.2-2' }}</td>
+      </tr>
+      <tr>
+        <td>Capital Cost (Monthly):</td>
+        <td>{{ equipment.Cost_of_Facilities_Capital_Ownership_cost_Monthly | number: '1.2-2' }}</td>
+      </tr>
+      <tr>
+        <td>Overhead Ownership Cost (Monthly):</td>
+        <td>{{ equipment.Overhead_Ownership_cost_Monthly | number: '1.2-2' }}</td>
+      </tr>
+      <tr>
+        <td>Overhaul Labor Ownership Cost (Monthly):</td>
+        <td>{{ equipment.Overhaul_Labor_Ownership_cost_Monthly | number: '1.2-2' }}</td>
+      </tr>
+      <tr>
+        <td>Overhaul Parts Ownership Cost (Monthly):</td>
+        <td>{{ equipment.Overhaul_Parts_Ownership_cost_Monthly | number: '1.2-2' }}</td>
+      </tr>
+      <tr>
+        <td><strong>Total Ownership Cost (Hourly):</strong></td>
+        <td><strong>{{ equipment.Total_ownership_cost_hourly | number: '1.2-2' }}</strong></td>
+      </tr>
+    </table>
+
+    <table class="results">
+      <tr>
+        <td>Field Labor Operating Cost (Hourly):</td>
+        <td>{{ equipment.Field_Labor_Operating_cost_Hourly | number: '1.2-2' }}</td>
+      </tr>
+      <tr>
+        <td>Field Parts Operating Cost (Hourly):</td>
+        <td>{{ equipment.Field_Parts_Operating_cost_Hourly | number: '1.2-2' }}</td>
+      </tr>
+      <tr>
+        <td>Ground Engaging Component Cost Operating Cost (Hourly):</td>
+        <td>{{ equipment.Ground_Engaging_Component_Cost_Operating_cost_Hourly | number: '1.2-2' }}</td>
+      </tr>
+      <tr>
+        <td>Lube Operating Cost (Hourly):</td>
+        <td>{{ equipment.Lube_Operating_cost_Hourly | number: '1.2-2' }}</td>
+      </tr>
+      <tr>
+        <td>Fuel By Horse Power Operating Cost (Hourly):</td>
+        <td>{{ equipment.Fuel_by_horse_power_Operating_cost_Hourly | number: '1.2-2' }}</td>
+      </tr>
+      <tr>
+        <td>Tire Costs Operating Cost (Hourly):</td>
+        <td>{{ equipment.Tire_Costs_Operating_cost_Hourly | number: '1.2-2' }}</td>
+      </tr>
+      <tr>
+        <td><strong>Total Operating Cost(Hourly):</strong></td>
+        <td><strong>{{ equipment.Total_operating_cost | number: '1.2-2' }}</strong></td>
+      </tr>
+    </table>
+  
+    <table class="results">
+      <tr>
+        <td><strong>Total Cost Recovery(Hourly):</strong></td>
+        <td><strong>{{ equipment.Total_cost_recovery | number: '1.2-2' }}</strong></td>
+      </tr>
+    </table>
+  </div>  
+</div> -->
+
+
+
+<div *ngIf="equipment">
+  <h2>Edit Equipment Details</h2>
+  <table>
+    <tr>
+      <td>Category:</td>
+      <td><input type="text" [(ngModel)]="equipment.Category" readonly></td>
+      <td>Sub Category:</td>
+      <td><input type="text" [(ngModel)]="equipment.Sub_Category" readonly></td>
+    </tr>
+    <tr>
+      <td>Size:</td>
+      <td><input type="text" [(ngModel)]="equipment.Size" readonly></td>
+      <td>Fuel Type:</td>
+      <td>
+        <input type="text" [value]="getFuelTypeLabel()" readonly />
+  <!-- Show the dropdown for admins -->
+        <!-- <select *ngIf="isAdmin" [(ngModel)]="selectedFuelType" (change)="onFuelTypeChange($event)">
+          <option value="1">Diesel</option>
+          <option value="2">Gas</option>
+        </select> -->
+      </td>
+    </tr>
+
+    <tr>
+      <td>Selected County:</td>
+      <!-- <td>
+        <select [(ngModel)]="selectedQuarter" (change)="onQuarterChange($event)" name="fuelUnitPrice">
+          <option *ngFor="let quarter of quarters" [value]="quarter">{{ quarter }}</option>
+        </select>
+        
+        
+      </td> -->
+      <td><input type="text" [value]="selectedCounty" readonly></td>
+
+
+      <td>Original Price:</td>
+      <td><input type="number" [(ngModel)]="equipment.Original_price" [readonly]="!isEditable('Original_price')"></td>
+    </tr>
+
+    <tr>
+      <td>Selected Quarter:</td>
+      <td><input type="text" [value]="selectedQuarter" readonly></td>
+
+      <td>Fuel Price ($/gallon):</td>
+  <td><input type="text" [value]="selectedFuelUnitPrice | number: '1.2-2'" readonly></td>
+    </tr>
+
+
+    <tr>
+      <td>Sales Tax:</td>
+      <td><input type="number" [(ngModel)]="equipment.Sales_Tax" [readonly]="!isEditable('Sales_Tax')"></td>
+      <td>Discount:</td>
+      <td><input type="number" [(ngModel)]="equipment.Discount" [readonly]="!isEditable('Discount')"></td>
+    </tr>
+    <tr>
+      <td>Salvage Value:</td>
+      <td><input type="number" [(ngModel)]="equipment.Salvage_Value" [readonly]="!isEditable('Salvage_Value')"></td>
+      <td>Annual Overhaul Labor Hours:</td>
+      <td><input type="number" [(ngModel)]="equipment.Annual_Overhaul_Labor_Hours" [readonly]="!isEditable('Annual_Overhaul_Labor_Hours')"></td>
+    </tr>
+    <tr>
+      <td>Annual Field Labor Hours:</td>
+      <td><input type="number" [(ngModel)]="equipment.Annual_Field_Labor_Hours" [readonly]="!isEditable('Annual_Field_Labor_Hours')"></td>
+      <td>Cost Of New Set Of Tires:</td>
+      <td><input type="number" [(ngModel)]="equipment.Cost_of_A_New_Set_of_Tires" [readonly]="!isEditable('Cost_of_A_New_Set_of_Tires')"></td>
+    </tr>
+    <tr>
+      <td>Tire Life Hours:</td>
+      <td><input type="number" [(ngModel)]="equipment.Tire_Life_Hours" [readonly]="!isEditable('Tire_Life_Hours')"></td>
+      <td>Hourly Lube Costs:</td>
+      <td><input type="number" [(ngModel)]="equipment.Hourly_Lube_Costs" [readonly]="!isEditable('Hourly_Lube_Costs')"></td>
+    </tr>
+    <tr>
+      <td>Hourly Wage:</td>
+      <td><input type="number" [(ngModel)]="equipment.Hourly_Wage" [readonly]="!isEditable('Hourly_Wage')"></td>
+      <td>Horsepower(fps):</td>
+      <td><input type="number" [(ngModel)]="equipment.Horse_power" (change)="onHorsePowerChange($event)" [readonly]="!isEditable('Horsepower')"></td>
+    </tr>
+    <tr>
+      <td>Economic Life in months:</td>
+      <td><input type="number" [(ngModel)]="equipment.Economic_Life_in_months" [readonly]="!isEditable('Economic_Life_in_months')"></td>
+      <td>Standard Monthly Use Hours:</td>
+      <td><input type="number" [(ngModel)]="equipment.Monthly_use_hours" [readonly]="!isEditable('Monthly_use_hours')"></td>
+    </tr>
+    <tr>
+      <td>Initial Freight Costs:</td>
+      <td><input type="number" [(ngModel)]="equipment.Initial_Freight_cost" [readonly]="!isEditable('Initial_Freight_cost')"></td>
+      <td>Annual Overhead Rate Based On Resale Value:</td>
+      <td><input type="number" [(ngModel)]="equipment.Annual_Overhead_rate" [readonly]="!isEditable('Annual_Overhead_rate')"></td>
+    </tr>
+    <tr>
+      <td>Annual Overhaul Parts Cost Rate Of Original Price:</td>
+      <td><input type="number" [(ngModel)]="equipment.Annual_Overhaul_Parts_cost_rate" [readonly]="!isEditable('Annual_Overhaul_Parts_cost_rate')"></td>
+      <td>Annual Field Repair Parts :</td>
+      <td><input type="number" [(ngModel)]="equipment.Annual_Field_Repair_Parts_and_misc_supply_parts_Cost_rate" [readonly]="!isEditable('Annual_Field_Repair_Parts')"></td>
+    </tr>
+
+    <tr>
+       <td>Capital Cost Rate Of Original Price:</td>
+      <td><input type="number" [(ngModel)]="equipment.Cost_of_Capital_rate" [readonly]="!isEditable('Cost_of_Capital_rate')"></td>
+    </tr>
+  </table>
+
+  <div class="center">
+    <div class="button-container">
+      <button (click)="onCalculateCostsClicked('calculate')">Calculate Costs</button>
+    </div>
+  </div>
+
+  <h2>Calculated Costs</h2>
+  <div class="costs-container">
+    <table class="results">
+      <tr>
+        <td>Current Market Resale Value:</td>
+        <td>{{ equipment.Current_Market_Year_Resale_Value | number: '1.2-2' }}</td>
+      </tr>
+      </table>
+    <table class="results">
+      <tr>
+        <td>Depreciation Ownership Cost (Monthly):</td>
+        <td>{{ equipment.Depreciation_Ownership_cost_Monthly | number: '1.2-2' }}</td>
+      </tr>
+      <tr>
+        <td>Capital Cost (Monthly):</td>
+        <td>{{ equipment.Cost_of_Facilities_Capital_Ownership_cost_Monthly | number: '1.2-2' }}</td>
+      </tr>
+      <tr>
+        <td>Overhead Ownership Cost (Monthly):</td>
+        <td>{{ equipment.Overhead_Ownership_cost_Monthly | number: '1.2-2' }}</td>
+      </tr>
+      <tr>
+        <td>Overhaul Labor Ownership Cost (Monthly):</td>
+        <td>{{ equipment.Overhaul_Labor_Ownership_cost_Monthly | number: '1.2-2' }}</td>
+      </tr>
+      <tr>
+        <td>Overhaul Parts Ownership Cost (Monthly):</td>
+        <td>{{ equipment.Overhaul_Parts_Ownership_cost_Monthly | number: '1.2-2' }}</td>
+      </tr>
+      <tr>
+        <td><strong>Total Ownership Cost (Hourly):</strong></td>
+        <td><strong>{{ equipment.Total_ownership_cost_hourly | number: '1.2-2' }}</strong></td>
+      </tr>
+    </table>
+
+    <table class="results">
+      <tr>
+        <td>Field Labor Operating Cost (Hourly):</td>
+        <td>{{ equipment.Field_Labor_Operating_cost_Hourly | number: '1.2-2' }}</td>
+      </tr>
+      <tr>
+        <td>Field Parts Operating Cost (Hourly):</td>
+        <td>{{ equipment.Field_Parts_Operating_cost_Hourly | number: '1.2-2' }}</td>
+      </tr>
+      <tr>
+        <td>Ground Engaging Component Cost Operating Cost (Hourly):</td>
+        <td>{{ equipment.Ground_Engaging_Component_Cost_Operating_cost_Hourly | number: '1.2-2' }}</td>
+      </tr>
+      <tr>
+        <td>Lube Operating Cost (Hourly):</td>
+        <td>{{ equipment.Lube_Operating_cost_Hourly | number: '1.2-2' }}</td>
+      </tr>
+      <tr>
+        <td>Fuel By Horse Power Operating Cost (Hourly):</td>
+        <td>{{ equipment.Fuel_by_horse_power_Operating_cost_Hourly | number: '1.2-2' }}</td>
+      </tr>
+      <tr>
+        <td>Tire Costs Operating Cost (Hourly):</td>
+        <td>{{ equipment.Tire_Costs_Operating_cost_Hourly | number: '1.2-2' }}</td>
+      </tr>
+      <tr>
+        <td><strong>Total Operating Cost(Hourly):</strong></td>
+        <td><strong>{{ equipment.Total_operating_cost | number: '1.2-2' }}</strong></td>
+      </tr>
+    </table>
+  
+    <table class="results">
+      <tr>
+        <td><strong>Total Cost Recovery(Hourly):</strong></td>
+        <td><strong>{{ equipment.Total_cost_recovery | number: '1.2-2' }}</strong></td>
+      </tr>
+    </table>
+  </div>
+</div>

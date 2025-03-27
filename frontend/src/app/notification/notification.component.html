@@ -1,0 +1,5 @@
+<div *ngIf="notification" @slideInOut class="notification" [ngClass]="notification.type">
+    {{ notification.message }}
+    <button (click)="closeNotification()" class="close-btn">X</button>
+  </div>
+  

@@ -1,0 +1,9 @@
+<div>
+    <button
+      *ngFor="let pageNumber of pageNumbers(); let i = index;"
+      [class.active]="currentPage === pageNumber"
+      (click)="onPageChange(pageNumber)">
+      {{ pageNumber }}
+    </button>
+  </div>
+  

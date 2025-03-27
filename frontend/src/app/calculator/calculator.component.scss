@@ -1,0 +1,191 @@
+.page {
+    color: white;
+    padding: 0 1rem;
+    background: #f1f5f9;
+    &__box {
+      min-height: 120px;
+      background: #1e293b;
+      margin: 0 -1rem;
+      font-size: 36px;
+    }
+    &__content {
+      min-height: calc(100vh - 178px);
+      border-radius: 10px;
+      margin-top: -2rem;
+      background: white;
+      color: black;
+      font-size: 2rem;
+      &-data {
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+    }
+  }
+  
+.float-container {
+    border: 3px solid #fff;
+    padding: 20px;
+}
+
+.float-child {
+    width: 49%;
+    float: left;
+    padding: 20px;
+    margin: 5px;
+    border: 2px solid lightgray;
+    height: 32rem;
+} 
+.editableDiv {
+    width: 100%;
+    background-color: lightgray;
+    height: 50px;
+    font-size: 20px;
+    //max-width: 100%;
+    overflow-y: auto;
+}
+
+.wrapper{
+    background-color: lightgray;
+    width: 30%;
+    float: left;
+    display: flex;
+}
+
+.wrapper-cost {
+    background-color: lightgray;
+    width: 100%;
+    float: left;
+    display: flex;
+    align-items: center;
+}
+
+.symbols {
+    font-size: 20px;
+}
+
+.op-cost {
+    background-color: lightgray;
+    margin-top: 5px;
+}
+
+.hori-float{
+float: left;
+}
+
+.label-text{
+    font-size: 15px;
+}
+
+.mat-divider {
+    border-top-color: black;
+}
+
+.hori-container {
+    padding-bottom: 2px;
+    margin-bottom: 5px;
+}
+
+.blue {
+    text-align: center;
+}
+
+::ng-deep .mat-tab-list .mat-tab-labels .mat-tab-label-active {
+    color:#1e293b;
+    background-color: lightgray;
+    font-size: 1.5rem;
+    }
+    
+::ng-deep .mat-tab-list .mat-tab-labels {
+    color:lightgray;
+    background-color: #1e293b;
+    }
+
+::ng-deep  .mat-tab-label {
+        color: white;
+    }
+
+.internal-tabs
+{
+     width: 10px;
+}
+
+.search-bar {
+    width: 15rem;
+    height: 2rem;
+    font-size: 1rem;
+}
+
+tr{
+    font-size: 1rem;
+    border-bottom: 1px solid black;
+    height: 1rem;
+    width: 100%;
+    overflow-y: scroll;
+}
+table{
+    height: inherit;
+    overflow: scroll;
+}
+
+td{
+    font-size: 1rem;
+}
+
+.table-wrapper {
+    height: 22rem;
+    overflow-y: scroll;
+}
+
+.rate-text {
+    color: red;
+    position: relative;
+    float: left;
+    left: 50%;
+    }
+
+    .saved-models-table {
+        display: flex;
+        flex-direction: column;
+        border: 1px solid #ccc;
+        margin-top: 20px;
+        border-radius: 5px;
+        font-family: Arial, sans-serif;
+      }
+      
+      .table-header {
+        display: flex;
+        background-color: #f1f1f1;
+        font-weight: bold;
+        border-bottom: 1px solid #ccc;
+        font-size: 14px;
+      }
+      
+      .table-row {
+        display: flex;
+        border-bottom: 1px solid #ccc;
+      }
+      
+      .table-cell {
+        flex: 1;
+        padding: 10px;
+        font-size: 12px;
+      }
+      
+      /* Add alternate background color to table rows */
+      .table-row:nth-child(even) {
+        background-color: #f9f9f9;
+      }
+      
+      /* Hover effect for table rows */
+      .table-row:hover {
+        background-color: #e3e3e3;
+      }
+      
+      /* Add padding and center-align text in the cells */
+      .table-cell {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      

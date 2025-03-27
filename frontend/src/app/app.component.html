@@ -1,0 +1,38 @@
+<div id="app">
+  <nav class="navbar navbar-expand navbar-dark">
+    <img src="./assets/company.png" class="navbar-brand" alt="Company Logo" />
+    <ul class="navbar-nav mr-auto" routerLinkActive="active">
+      <li class="nav-item">
+        <a href="/home" class="nav-link" routerLink="home">Home </a>
+      </li>
+      <li *ngIf="isLoggedIn" class="nav-item">
+        <a routerLink="/equipments" class="nav-link" routerLink="equipments">Equipments</a>
+      </li>
+      <li *ngIf="isLoggedIn && this.showAdminBoard" class="nav-item">
+        <a  (click)="navigateTo('/manage-equipment-data')" class="nav-link" routerLink="manage-equipment-data">Manage Equipment Data</a>
+      </li>
+    </ul>
+
+    <ul class="navbar-nav ml-auto" *ngIf="!isLoggedIn">
+      <li class="nav-item">
+        <a href="/register" class="nav-link" routerLink="register">Sign Up</a>
+      </li>
+      <li class="nav-item">
+        <a href="/login" class="nav-link" routerLink="login">Login</a>
+      </li>
+    </ul>
+
+    <ul class="navbar-nav ml-auto" *ngIf="isLoggedIn">
+      <li class="nav-item">
+        <a href="/profile" class="nav-link" routerLink="profile">{{ username }}</a>
+      </li>
+      <li class="nav-item">
+        <a href class="nav-link" (click)="logout()">LogOut</a>
+      </li>
+    </ul>
+  </nav>
+  <app-notification></app-notification>
+  <div class="maincontainer">
+    <router-outlet></router-outlet>
+  </div>
+</div>

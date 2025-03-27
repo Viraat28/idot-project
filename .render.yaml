@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: idot-fullstack
+    env: node
+    plan: free
+    buildCommand: |
+      cd frontend
+      npm install
+      npm run build -- --configuration production
+      cd ../backend
+      npm install
+    startCommand: node index.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+    staticPublishPath: frontend/static

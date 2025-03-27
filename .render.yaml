@@ -1,18 +1,22 @@
 services:
   - type: web
-    name: idot-fullstack
+    name: idot-backend
     env: node
-    plan: free
-    buildCommand: |
-      cd frontend
-      npm install
-      npm run build -- --configuration production
-      cd ../backend
-      npm install
-    startCommand: node index.js
+    rootDir: IDOT.BACKEND-main
+    buildCommand: npm install
+    startCommand: npm start
     envVars:
       - key: NODE_ENV
         value: production
-      - key: PORT
-        value: 10000
+      - key: MONGODB_URI
+        sync: false
+      - key: COOKIE_SECRET
+        sync: false
+
+  - type: web
+    name: idot-frontend
+    env: static
+    rootDir: IDOT.UI-main
+    buildCommand: npm install && npm run build --prod
     staticPublishPath: frontend/static
+

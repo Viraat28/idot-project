@@ -3,12 +3,16 @@ require('dotenv').config(); // Ensure this is at the top to load environment var
 const express = require("express");
 const cors = require("cors");
 const cookieSession = require("cookie-session");
+const path = require("path");
 const dbConfig = require("./app/config/db.config");
 
 const app = express();
-const path = __dirname + '/app/views/';
+//const path = __dirname + '/app/views/';
 
-app.use(express.static(path));
+//app.use(express.static(path));
+const angularDistPath = path.join(__dirname, '../frontend/static');
+app.use(express.static(angularDistPath));
+
 
 const corsOptions = {
   origin: ["http://localhost:4200", "https://idot-ui.vercel.app"],
@@ -50,6 +54,10 @@ db.mongoose
 
 require("./app/routes/auth.routes")(app);
 require("./app/routes/user.routes")(app);
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(angularDistPath, 'index.html'));
+});
 
 const PORT = process.env.PORT || 8082;
 app.listen(PORT, () => {

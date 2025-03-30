@@ -15,7 +15,7 @@ app.use(express.static(angularDistPath));
 
 
 const corsOptions = {
-  origin: ["http://localhost:4200", "https://idot-ui.vercel.app"],
+  origin: ["https://idot-project.vercel.app"],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']

@@ -4,8 +4,8 @@ import { Observable } from 'rxjs';
 import { Equipment } from '../board-admin/board-admin.component';
 import { StorageService } from './storage.service';
 
-//const API_URL = 'http://localhost:8082/api/test/';
-const API_URL = 'https://idot-project-backend.vercel.app/api/test/';
+const API_URL = 'http://localhost:8082/api/test/';
+//const API_URL = 'https://idot-project-backend.vercel.app/api/test/';
 
 
 @Injectable({

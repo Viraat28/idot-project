@@ -352,13 +352,13 @@ export class EquipmentDetailsComponent {
   onHorsePowerChange(event: Event) {
     const selectedHorsePower = +(event.target as HTMLSelectElement).value;
     this.selectedHorsePower = selectedHorsePower;
-    this.selectedFuelUnitPrice = this.getFuelPrice(
-      this.selectedFuelType,
-      this.selectedQuarter
-    );
+    //this.selectedFuelUnitPrice = this.getFuelPrice(
+    //  this.selectedFuelType,
+     // this.selectedQuarter
+    //);
     if (this.equipment) {
       this.equipment.Horse_power = this.selectedHorsePower;
-      this.equipment.Fuel_unit_price = this.selectedFuelUnitPrice;
+      //this.equipment.Fuel_unit_price = this.selectedFuelUnitPrice;
       this.calculateFuelCost();
       this.calculateTotalOperatingCost();
     }

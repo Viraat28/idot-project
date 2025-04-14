@@ -25,7 +25,8 @@ export class CountySelectionComponent {
 
   quarters: string[] = [
     '2023 Jan-Mar', '2023 Apr-Jun', '2023 Jul-Sep', '2023 Oct-Dec',
-    '2024 Jan-Mar', '2024 Apr-Jun', '2024 Jul-Sep', '2024 Oct-Dec'
+    '2024 Jan-Mar', '2024 Apr-Jun', '2024 Jul-Sep', '2024 Oct-Dec',
+    '2025 Jan-Mar'
   ]; //added
 
   selectedCounty: string = '';

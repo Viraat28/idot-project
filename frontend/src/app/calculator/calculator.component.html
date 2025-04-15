@@ -1,163 +1,123 @@
 <div *ngIf="!dataLoaded">
-  <app-loading-spinner  [message]="'Loading data...'"></app-loading-spinner>
+  <app-loading-spinner [message]="'Loading data...'"></app-loading-spinner>
 </div>
 <div class="container-fluid page">
-    <div class="d-flex page__box p-3 mt-2">Calculator</div>
-    <div class="page__content shadow p-3 position-relative">
-      <div >
-        <mat-tab-group #tabGroup preserveContent (selectedTabChange)="onTabChange($event)">
-          <mat-tab label="Cost recovery">
-            <div class="float-container">
-  
-              <!-- <div class="float-child">
-                <div class="green">
-                  <mat-tab-group>
-                    <div class="internal-tabs">
-                      <mat-tab label="search by keyword">
-                        <input type="text" class="search-bar" placeholder="Search by keyword" [(ngModel)]="enteredSearchValue">
-                        <div class="table-wrapper">
-                          <table>
-                            <ng-container *ngFor="let item of items">
-                              <tr *ngIf="enteredSearchValue === '' || (!!item['Manufacturer'] && item['Manufacturer'].toLowerCase().includes(enteredSearchValue))" (click)="calculateCosts(item)">
-                                <div *ngIf="!!item">
-                                  <div>Manufacturer:{{item['Manufacturer']}}</div><br>
-                                  <div>Price:{{item['Original_price']}}</div><br>
-                                  <div>Power:{{item['Size']}}</div><br>
-                                  <div>Fuel type:{{item['Fuel_type']}}</div><br>
-                                </div>
-                              </tr>
-                            </ng-container>
-                          </table>
-                        </div>
-                      </mat-tab>
+  <div class="d-flex page__box p-3 mt-2">Calculator</div>
+  <div class="page__content shadow p-3 position-relative">
+    <div>
+      <mat-tab-group #tabGroup preserveContent (selectedTabChange)="onTabChange($event)">
+        <mat-tab label="Cost recovery">
+          <div class="float-container">
+            <div class="float-child">
+              <div class="blue">
+                <h2 class="text-center">FHWA Rate</h2>
+                <h6 *ngIf="selectedItem && selectedItem.Sub_Category">{{selectedItem.Sub_Category}}</h6>
+                <h6 class="text-center">Ownership cost (one month)</h6>
+                <div>
+                  <div class="hori-container">
+                    <div class="wrapper">
+                      <div class="symbols">$</div>
+                      <input class="editableDiv" type="number" [(ngModel)]="unadjustedRate" (input)="updateRate(); updateStandByRate();" title="From unadjusted rate" />
                     </div>
-                    <div class="internal-tabs">
-                      <mat-tab label="search by category">
-                        search by category
-                      </mat-tab>
+                    <div class="hori-float symbols">x</div>
+                    <div class="wrapper">
+                      <input class="editableDiv hori-float" type="number" [(ngModel)]="modelRate" (input)="updateRate(); updateStandByRate();" title="Model year adjustment" />
+                      <div class="symbols">%</div>
                     </div>
-                  </mat-tab-group>
-                </div>
-              </div> -->
-              
-              <div class="float-child">
-                <div class="blue">
-                  <h2 class="text-center">FHWA Rate</h2>
-                  <h6 *ngIf="selectedItem && selectedItem.Sub_Category">{{selectedItem.Sub_Category}}</h6>
-                  <h6 class="text-center">Ownership cost (one month)</h6>
-                  <div>
-                    <div class="hori-container">
-                      <!-- for UI value -->
-                      <div class="wrapper">
-                        <div class="symbols">$</div>
-                        <div class="editableDiv" contentEditable='true' [textContent]="unadjustedRate" (input)="updateUnadjustedRate($event)" title="From unadjusted rate"></div>
-                      </div>
-                      <div class="hori-float symbols">x</div>
-                      <div class="wrapper">
-                        <div class="editableDiv hori-float" contentEditable='true' [textContent]="modelRate" (input)="updateModelRate($event)" title="Model year adjustment"></div>
-                        <div class="symbols">%</div>
-                      </div>
-                      <div class="hori-float symbols">x</div>
-                      <div class="wrapper">
-                        <div class="editableDiv hori-float" contentEditable='true' [textContent]="regionalRate" (input)="updateRegionalRate($event)" title="Regional adjustment"></div>
-                        <div class="symbols">%</div>
-                      </div>
-                      <!-- for editable value -->
+                    <div class="hori-float symbols">x</div>
+                    <div class="wrapper">
+                      <input class="editableDiv hori-float" type="number" [(ngModel)]="regionalRate" (input)="updateRate(); updateStandByRate();" title="Regional adjustment" />
+                      <div class="symbols">%</div>
                     </div>
-                    <br>
-                    <mat-divider></mat-divider>
-                    <div class="text-center">
-                      <div class="op-cost" contentEditable='false' [textContent]="hours" (input)="updateHours($event)" ></div>
-                      <div>+</div>
-                    </div>
-                    <div class="text-center">
-                      <div class="label-text">Operation cost (hourly)</div>
-                      <div class="op-cost" contentEditable='true' [textContent]="operCost" (input)="updateOpCost($event)" ></div>
-                      <div>=</div>
-                    </div>
-                    <div class="text-center">
-                      <div class="label-text">Rate used for Reiumbersment:FHWA(Hourly)</div>
-                      <div class="wrapper-cost">
-                        <div class="symbols">$</div>
-                        <div class="op-cost rate-text" readonly>{{rateUsed}}</div>
-                      </div>
+                  </div>
+                  <br />
+                  <mat-divider></mat-divider>
+                  <div class="text-center">
+                    <input class="op-cost" type="number" [(ngModel)]="hours" (input)="updateRate(); updateStandByRate();" />
+                    <div>+</div>
+                  </div>
+                  <div class="text-center">
+                    <div class="label-text">Operation cost (hourly)</div>
+                    <input class="op-cost" type="number" [(ngModel)]="operCost" (input)="updateRate(); updateStandByRate();" />
+                    <div>=</div>
+                  </div>
+                  <div class="text-center">
+                    <div class="label-text">Rate used for Reiumbersment:FHWA(Hourly)</div>
+                    <div class="wrapper-cost">
+                      <div class="symbols">$</div>
+                      <div class="op-cost rate-text" readonly>{{rateUsed}}</div>
                     </div>
                   </div>
                 </div>
-              </div>
-              <div class="float-child">
-                <div class="blue">
-                  <h2 class="text-center">Standby Rate</h2>
-                  <h6 *ngIf="!!selectedItem">{{selectedItem['Sub_Category']}}</h6>
-                  <h6 class="text-center">Ownership cost (one month)</h6>
-                  <div>
-                    <div class="hori-container">
-                      <!-- for UI value -->
-                      <div class="wrapper">
-                        <div class="symbols">$</div>
-                        <div class="editableDiv" contentEditable='true' [textContent]="unadjustedRate" (input)="updateUnadjustedRate($event)" title="From unadjusted rate"></div>
-                      </div>
-                      <div class="hori-float symbols">x</div>
-                      <div class="wrapper">
-                        <div class="editableDiv hori-float" contentEditable='true' [textContent]="modelRate" (input)="updateModelRate($event)" title="Model year adjustment"></div>
-                        <div class="symbols">%</div>
-                      </div>
-                      <div class="hori-float symbols">x</div>
-                      <div class="wrapper">
-                        <div class="editableDiv hori-float" contentEditable='true' [textContent]="regionalRate" (input)="updateRegionalRate($event)" title="Regional adjustment"></div>
-                        <div class="symbols">%</div>
-                      </div>
-                      <!-- for editable value -->
-                    </div>
-                    <br>
-                    <mat-divider></mat-divider>
-                    <div class="text-center">
-                      <div class="op-cost" contentEditable='false' [textContent]="hours" (input)="updateHours($event)" ></div>
-                      <div>x</div>
-                    </div>
-                    <div class="text-center">
-                      <div class="op-cost" contentEditable='true' [textContent]="operCostMultiplier" (input)="updateOperCostMultiplier($event)" ></div>
-                      <div>=</div>
-                    </div>
-                    <div class="text-center">
-                      <div class="label-text">Standby rate</div>
-                      <div class="wrapper-cost">
-                        <div class="symbols">$</div>
-                        <div class="op-cost rate-text" readonly>{{standByRate}}</div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="save-model-button">
-                <button class="btn btn-primary" (click)="saveModel()">Save Model</button>
               </div>
             </div>
-          </mat-tab>
-          <!-- <mat-tab label="Search Equipment">Note how the video from the previous tab is still playing.</mat-tab> -->
-          <mat-tab label="Saved Models" >
-            <div *ngIf="savedModels.length === 0">No saved models found.</div>
-            <div *ngIf="savedModels.length !== 0" class="saved-models-table">
-                <div class="table-header">
-                  <div class="table-cell">Category</div>
-                  <div class="table-cell">Subcategory</div>
-                  <div class="table-cell">Size</div>
-                  <div class="table-cell">Model Year</div>
-                  <div class="table-cell">Fuel Type</div>
+            <div class="float-child">
+              <div class="blue">
+                <h2 class="text-center">Standby Rate</h2>
+                <h6 *ngIf="!!selectedItem">{{selectedItem['Sub_Category']}}</h6>
+                <h6 class="text-center">Ownership cost (one month)</h6>
+                <div>
+                  <div class="hori-container">
+                    <div class="wrapper">
+                      <div class="symbols">$</div>
+                      <input class="editableDiv" type="number" [(ngModel)]="unadjustedRate" (input)="updateRate(); updateStandByRate();" title="From unadjusted rate" />
+                    </div>
+                    <div class="hori-float symbols">x</div>
+                    <div class="wrapper">
+                      <input class="editableDiv hori-float" type="number" [(ngModel)]="modelRate" (input)="updateRate(); updateStandByRate();" title="Model year adjustment" />
+                      <div class="symbols">%</div>
+                    </div>
+                    <div class="hori-float symbols">x</div>
+                    <div class="wrapper">
+                      <input class="editableDiv hori-float" type="number" [(ngModel)]="regionalRate" (input)="updateRate(); updateStandByRate();" title="Regional adjustment" />
+                      <div class="symbols">%</div>
+                    </div>
+                  </div>
+                  <br />
+                  <mat-divider></mat-divider>
+                  <div class="text-center">
+                    <input class="op-cost" type="number" [(ngModel)]="hours" (input)="updateRate(); updateStandByRate();" />
+                    <div>x</div>
+                  </div>
+                  <div class="text-center">
+                    <input class="op-cost" type="number" [(ngModel)]="operCostMultiplier" (input)="updateStandByRate();" />
+                    <div>=</div>
+                  </div>
+                  <div class="text-center">
+                    <div class="label-text">Standby rate</div>
+                    <div class="wrapper-cost">
+                      <div class="symbols">$</div>
+                      <div class="op-cost rate-text" readonly>{{standByRate}}</div>
+                    </div>
+                  </div>
                 </div>
-                <div *ngFor="let model of savedModels" class="table-row" (click)="savedModelClicked(model)">
-                  <div class="table-cell">{{ model.category }}</div>
-                  <div class="table-cell">{{ model.subcategory }}</div>
-                  <div class="table-cell">{{ model.size }}</div>
-                  <div class="table-cell">{{ model.modelYear }}</div>
-                  <div class="table-cell">{{ getFuelType(model.fueltype) }}</div>
-                </div>
-              </div>              
-          </mat-tab>
-        </mat-tab-group>
-  
-      </div>
+              </div>
+            </div>
+            <div class="save-model-button">
+              <button class="btn btn-primary" (click)="saveModel()">Save Model</button>
+            </div>
+          </div>
+        </mat-tab>
+        <mat-tab label="Saved Models">
+          <div *ngIf="savedModels.length === 0">No saved models found.</div>
+          <div *ngIf="savedModels.length !== 0" class="saved-models-table">
+            <div class="table-header">
+              <div class="table-cell">Category</div>
+              <div class="table-cell">Subcategory</div>
+              <div class="table-cell">Size</div>
+              <div class="table-cell">Model Year</div>
+              <div class="table-cell">Fuel Type</div>
+            </div>
+            <div *ngFor="let model of savedModels" class="table-row" (click)="savedModelClicked(model)">
+              <div class="table-cell">{{ model.category }}</div>
+              <div class="table-cell">{{ model.subcategory }}</div>
+              <div class="table-cell">{{ model.size }}</div>
+              <div class="table-cell">{{ model.modelYear }}</div>
+              <div class="table-cell">{{ getFuelType(model.fueltype) }}</div>
+            </div>
+          </div>
+        </mat-tab>
+      </mat-tab-group>
     </div>
-    
   </div>
-  
+</div>

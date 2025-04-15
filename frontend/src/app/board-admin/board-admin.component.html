@@ -37,7 +37,7 @@
          [routerLink]="['/equipment-list']" 
          [queryParams]="{modelYear: year}" 
          (click)="loadEquipmentData(year)">
-        {{ year }}
+        {{ year === '2003' ? '2003 or older' : year}}
       </a>
     </li>
   </ul>

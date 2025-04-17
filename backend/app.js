@@ -74,3 +74,7 @@ async function initial() {
     console.log("Roles initialized.");
   }
 }
+
+//New addition
+const fuelRoutes = require('./app/routes/fuel-price.routes');
+app.use('/api/fuel', fuelRoutes);

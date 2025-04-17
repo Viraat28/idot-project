@@ -3,7 +3,7 @@
 //import { Observable, map } from 'rxjs';
 //import * as Papa from 'papaparse';
 
-//@Injectable({
+//Injectable({
 //  providedIn: 'root',
 //})
 //export class FuelPriceService {

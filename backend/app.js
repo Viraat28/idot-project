@@ -76,5 +76,5 @@ async function initial() {
 }
 
 //New addition
-const fuelRoutes = require('./app/routes/fuel-price.routes');
-app.use('/api/fuel', fuelRoutes);
+//const fuelRoutes = require('./app/routes/fuel-price.routes');
+//app.use('/api/fuel', fuelRoutes);

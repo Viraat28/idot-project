@@ -38,17 +38,7 @@
 <!-- Edit Fuel Costs Form -->
 <div *ngIf="fuelCostsForm && showFuelForm && !showGenerateForm" class="fuel-costs-edit-form">
   <h2>Edit Fuel Costs</h2>
-  <label>Select County:</label>
-  <select [(ngModel)]="selectedCounty" (change)="onCountyOrQuarterChange()">
-    <option *ngFor="let county of counties" [value]="county">{{ county }}</option>
-  </select>
-
-  <label>Select Quarter:</label>
-  <select [(ngModel)]="selectedQuarter" (change)="onCountyOrQuarterChange()">
-    <option *ngFor="let quarter of quarters" [value]="quarter">{{ quarter }}</option>
-  </select>
   <form [formGroup]="fuelCostsForm">
-
       <label for="gasoline_price">Gasoline Price:</label>
       <input type="number" id="gasoline_price" formControlName="gasoline_price">
 

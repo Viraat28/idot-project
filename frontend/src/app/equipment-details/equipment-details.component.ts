@@ -29,8 +29,43 @@ export class EquipmentDetailsComponent {
     //this.selectedFuelType = fuelCode ? fuelCode.toString() : '3'; // fallback to 'other'
     return map[fuelCode];
   }
-  quarters: string[] = [];
- 
+  
+  private fuelPrices: { [fuelType: string]: { [quarter: string]: number } } = {
+    '1': {
+      // Diesel
+      '2023 Jan-Mar': 3.95,
+      '2023 Apr-Jun': 3.85,
+      '2023 Jul-Sep': 3.75,
+      '2023 Oct-Dec': 3.60,
+      '2024 Jan-Mar': 3.55,
+      '2024 Apr-Jun': 3.50,
+      '2024 Jul-Sep': 3.45,
+      '2024 Oct-Dec': 3.15,
+    },
+    '2': {
+      // Gas
+      '2023 Jan-Mar': 2.93,
+      '2023 Apr-Jun': 3.15,
+      '2023 Jul-Sep': 3.27,
+      '2023 Oct-Dec': 2.69,
+      '2024 Jan-Mar': 2.71,
+      '2024 Apr-Jun': 3.10,
+      '2024 Jul-Sep': 2.85,
+      '2024 Oct-Dec': 2.57,
+    },
+
+    '3': {
+      // Diesel
+      '2023 Jan-Mar': 0,
+      '2023 Apr-Jun': 0,
+      '2023 Jul-Sep': 0,
+      '2023 Oct-Dec': 0,
+      '2024 Jan-Mar': 0,
+      '2024 Apr-Jun': 0,
+      '2024 Jul-Sep': 0,
+      '2024 Oct-Dec': 0,
+    },
+  };
   counties: string[] = [
     // '2023 Jan-Mar',
     // '2023 Apr-Jun',
@@ -82,19 +117,7 @@ export class EquipmentDetailsComponent {
     } else {
       this.userRole = 'user'; // Default to user if roles are not available
     }
-    
-    //this.equipment = history.state.equipment;
-    this.equipment = history.state.equipment || this.storageService.getItem('selectedEquipment');
-
-if (!this.equipment) {
-  console.error('No equipment data found. Redirecting...');
-  this.router.navigate(['/equipment-list']);
-  return;
-}
-
-    
-
-    
+    this.equipment = history.state.equipment;
     this.isContractor = history.state.isContractor;
     this.ModelYear =
       this.isContractor && this.equipment
@@ -110,14 +133,14 @@ if (!this.equipment) {
     this.selectedFuelType = fuelCode ? fuelCode.toString() : '3';          //added - assigns the fuel type
 
 
-    this.fuelPriceService.getFuelMetadata().subscribe((metadata: { counties: string[], quarters: string[] }) => {
-      this.counties = metadata.counties;
-      this.quarters = metadata.quarters;
+    this.fuelPriceService.getFuelPriceData().subscribe((data) => {
+      this.fuelPriceData = data;
+      this.setFuelUnitPriceFromCSV(); // Fetch correct price
     });
     
 
 
-    this.setFuelUnitPriceFromMongo();
+
     if (!this.isAdmin) {
   
       // If both are selected, make all fields read-only
@@ -131,30 +154,31 @@ if (!this.equipment) {
     }
   }
   
-  private setFuelUnitPriceFromMongo(): void {
-    const fuelTypeLabel = this.getFuelTypeLabel();
-    console.log("Calling API with:", this.selectedCounty, this.selectedQuarter, fuelTypeLabel);
-
-    this.fuelPriceService.getFuelPrice(this.selectedCounty, this.selectedQuarter, fuelTypeLabel)
-      .subscribe({
-        next: (response) => {
-          const price = parseFloat(response.fuelPrice);
-          this.selectedFuelUnitPrice = price;
+  private setFuelUnitPriceFromCSV(): void {
+    const county = this.selectedCounty;
+    const quarter = this.selectedQuarter;
+    const fuelTypeLabel = this.getFuelTypeLabel(); // 'Diesel', 'Gas', or 'Other'
   
-          if (this.equipment) {
-            this.equipment.Fuel_unit_price = price;
-            this.calculateFuelCost();
-            this.calculateTotalOperatingCost();
-          }
-        },
-        error: (err) => {
-          console.error('Fuel price fetch failed:', err);
-        }
-      });
+    const record = this.fuelPriceData.find(
+      (entry: any) =>
+        entry.County === county &&
+        entry.Quarter === quarter &&
+        entry['Fuel Type'] === fuelTypeLabel
+    );
+  
+    if (record) {
+      const price = parseFloat(record['Fuel Price']);
+      this.selectedFuelUnitPrice = price;
+  
+      if (this.equipment) {
+        this.equipment.Fuel_unit_price = price;
+        this.calculateFuelCost();
+        this.calculateTotalOperatingCost();
+      }
+    } else {
+      console.warn('Fuel price not found for:', county, quarter, fuelTypeLabel);
+    }
   }
-  
-  
-  
   
 
 
@@ -200,6 +224,10 @@ if (!this.equipment) {
         );
         
         
+
+
+ // fallback to 'other'
+
 
 
         //this.selectedFuelType = '1';
@@ -317,9 +345,17 @@ if (!this.equipment) {
     }
   }
 
+  getFuelPrice(fuelType: string, quarter: string): number {
+    const fuelPriceMap = this.fuelPrices[fuelType];
+    return fuelPriceMap ? fuelPriceMap[quarter] || 0 : 0;
+  }
   onHorsePowerChange(event: Event) {
     const selectedHorsePower = +(event.target as HTMLSelectElement).value;
     this.selectedHorsePower = selectedHorsePower;
+    //this.selectedFuelUnitPrice = this.getFuelPrice(
+    //  this.selectedFuelType,
+     // this.selectedQuarter
+    //);
     if (this.equipment) {
       this.equipment.Horse_power = this.selectedHorsePower;
       //this.equipment.Fuel_unit_price = this.selectedFuelUnitPrice;
@@ -329,14 +365,22 @@ if (!this.equipment) {
   }
 
   onQuarterChange(event: Event) {
-    this.selectedQuarter = (event.target as HTMLSelectElement).value;
-    this.setFuelUnitPriceFromMongo();
+    const selectedQuarter = (event.target as HTMLSelectElement).value;
+    this.selectedQuarter = selectedQuarter;
+    this.selectedFuelUnitPrice = this.getFuelPrice(
+      this.selectedFuelType,
+      selectedQuarter
+    );
+    if (this.equipment) {
+      this.equipment.Fuel_unit_price = this.selectedFuelUnitPrice;
+      this.calculateFuelCost();
+      this.calculateTotalOperatingCost();
+    }
   }
-  
   onFuelTypeChange(event: Event) {
     const selectedFuelType = (event.target as HTMLSelectElement).value;
     this.selectedFuelType = selectedFuelType;
-    this.setFuelUnitPriceFromMongo();
+    this.setFuelUnitPriceFromCSV();
   }
   
   
